@@ -13,25 +13,16 @@ using System.Net;
 
 namespace AzureFunction.DurableFunctions
 {
-    public static class HttpStartFF
+    public static class HttpStartWTE
     {
-        /// <summary>
-        /// This function starts a new Orchestrator in the same Function App
-        /// The method return instanceId of new Function running
-        /// </summary>
-        /// <param name="req"></param>
-        /// <param name="orchestratorClient"></param>
-        /// <param name="orchestratorName"></param>
-        /// <param name="log"></param>
-        /// <returns></returns>
-        [FunctionName("HttpStart")]
+        [FunctionName("HttpStartWTE")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "start/{orchestratorName}")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", "startandwait/{orchestratorName}")] HttpRequestMessage req,
             [DurableClient] IDurableClient orchestratorClient,
             string orchestratorName,
             ILogger log)
         {
-            log.LogInformation("Processing HTTP START FF....");
+            log.LogInformation("Processing HTTP START WTE....");
             if (string.IsNullOrEmpty(orchestratorName))
             {
                 log.LogError("Orchestrator Name can not be null.");
@@ -43,9 +34,13 @@ namespace AzureFunction.DurableFunctions
                 var orchestratorInput = await req.Content.ReadAsAsync<object>();
                 string instanceId = await orchestratorClient.StartNewAsync(orchestratorName, orchestratorInput);
 
-                return req.CreateErrorResponse(HttpStatusCode.OK, instanceId);
+                HttpResponseMessage responseMessage = await orchestratorClient.WaitForCompletionOrCreateCheckStatusResponseAsync(
+                    req,
+                    instanceId);
+
+                return responseMessage;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 log.LogError($"Error start {orchestratorName} function: {ex.Message}");
                 return req.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
