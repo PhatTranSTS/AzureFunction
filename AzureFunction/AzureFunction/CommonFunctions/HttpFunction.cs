@@ -8,26 +8,26 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace AzureFunction.FanOutFanIn
+namespace AzureFunction.CommonFunctions
 {
-    public static class GetStoreIncome
+    public static class HttpFunction
     {
-        [FunctionName("GetStoreIncome")]
+        [FunctionName("HttpFunction")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("Sample Demo HTTP Trigger Azure Funtion:");
 
-            string name = req.Query["name"];
+            string msg = req.Query["message"];
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            msg = msg ?? data?.message;
 
-            string responseMessage = string.IsNullOrEmpty(name)
+            string responseMessage = string.IsNullOrEmpty(msg)
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+                : $"Hello, {msg}. This HTTP triggered function executed successfully.";
 
             return new OkObjectResult(responseMessage);
         }
