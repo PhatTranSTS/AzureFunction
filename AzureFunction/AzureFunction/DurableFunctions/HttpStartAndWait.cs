@@ -17,9 +17,9 @@ namespace AzureFunction.DurableFunctions
     public static class HttpStartAndWait
     {
         [FunctionName("HttpStartAndWait")]
-        public static async Task<IActionResult> Run(
+        public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "startandwait/{orchestratorName}")] HttpRequestMessage req,
-            [DurableClient] IDurableClient orchestratorClient,
+            [DurableClient]IDurableClient orchestratorClient,
             string orchestratorName,
             ILogger log)
         {
@@ -27,8 +27,11 @@ namespace AzureFunction.DurableFunctions
             if (string.IsNullOrEmpty(orchestratorName))
             {
                 log.LogError("Orchestrator Name can not be null.");
-                return new BadRequestObjectResult("Orchestrator Name can not be null. Please try again!");
-                //return req.CreateResponse(HttpStatusCode.BadRequest, "Orchestrator Name can not be null. Please try again!");
+                return new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Content = new StringContent("Orchestrator Name can not be null. Please try again!")
+                };
             }
 
             try
@@ -42,16 +45,15 @@ namespace AzureFunction.DurableFunctions
                     req,
                     instanceId);
 
-                var test = new FunctionResponseModel()
-                {
-                    FunctionName = orchestratorName,
-                    InstanceId = responseMessage.ToString(),
-                    Status = null
-                };
-                return new OkObjectResult(test);
-            } catch(Exception ex)
+                return responseMessage;
+            }
+            catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex.Message);
+                return new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Content = new StringContent(ex.Message)
+                };
             }
         }
     }
