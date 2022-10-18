@@ -1,12 +1,8 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using System.Net.Http;
 
@@ -22,7 +18,7 @@ namespace AzureFunction.DurableFunctions
             ILogger log)
         {
             log.LogInformation("HTTP Get Status processing...");
-            if(string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
             {
                 log.LogError("Id can not be null.");
                 return null;
@@ -30,9 +26,10 @@ namespace AzureFunction.DurableFunctions
 
             try
             {
-                DurableOrchestrationStatus status = await orchestratorClient.GetStatusAsync(id,true, true, true);
+                DurableOrchestrationStatus status = await orchestratorClient.GetStatusAsync(id, true, true, true);
                 return status;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 log.LogError(ex.Message);
                 return null;
