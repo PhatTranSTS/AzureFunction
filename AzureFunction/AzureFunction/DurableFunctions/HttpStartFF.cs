@@ -25,7 +25,7 @@ namespace AzureFunction.DurableFunctions
         /// <param name="log"></param>
         /// <returns></returns>
         [FunctionName("HttpStart")]
-        public static async Task<HttpResponseMessage> Run(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "start/{orchestratorName}")] HttpRequestMessage req,
             [DurableClient] IDurableClient orchestratorClient,
             string orchestratorName,
@@ -35,7 +35,7 @@ namespace AzureFunction.DurableFunctions
             if (string.IsNullOrEmpty(orchestratorName))
             {
                 log.LogError("Orchestrator Name can not be null.");
-                return req.CreateResponse(HttpStatusCode.NotFound, "Orchestrator Name can not be null. Please try again!");
+                return new BadRequestObjectResult("Orchestrator Name can not be null. Please try again!");
             }
 
             try
@@ -43,12 +43,13 @@ namespace AzureFunction.DurableFunctions
                 var orchestratorInput = await req.Content.ReadAsAsync<object>();
                 string instanceId = await orchestratorClient.StartNewAsync(orchestratorName, orchestratorInput);
 
-                return req.CreateErrorResponse(HttpStatusCode.OK, instanceId);
+                return new OkObjectResult(instanceId);
             }
             catch (Exception ex)
             {
                 log.LogError($"Error start {orchestratorName} function: {ex.Message}");
-                return req.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+                //return req.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+                return new BadRequestObjectResult(ex.Message);
             }
         }
     }
