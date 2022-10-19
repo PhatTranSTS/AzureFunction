@@ -9,5 +9,11 @@ namespace AzureFunction.Models
     {
         public HttpStatusCode HttpStatusCode { get; set; }
         public string ResponseString { get; set; }
+
+        public ResponseModel(HttpStatusCode httpStatusCode, string responseString)
+        {
+            this.HttpStatusCode = httpStatusCode;
+            this.ResponseString = responseString;
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace AzureFunction.DurableFunctions.FanInFanOut
             }
 
             await Task.WhenAll(tasks);
-
+            
             return new ResponseModel()
             {
                 HttpStatusCode = HttpStatusCode.OK,
