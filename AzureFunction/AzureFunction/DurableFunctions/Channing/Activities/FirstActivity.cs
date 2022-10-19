@@ -7,10 +7,10 @@ namespace AzureFunction.DurableFunctions.Channing.Activities
     public static class FirstActivity
     {
         [FunctionName("FirstActivity")]
-        public static string SayHello([ActivityTrigger] string name, ILogger log)
+        public static int Run([ActivityTrigger] int number, ILogger log)
         {
-            log.LogInformation($"FirstActivity: {name}.");
-            return $"Process FirstActivity: {name}";
+            log.LogInformation($"Process FirstActivity - Value: {number}");
+            return number;
         }
     }
 }

@@ -17,16 +17,20 @@ namespace AzureFunction.DurableFunctions.Channing
             [OrchestrationTrigger]IDurableOrchestrationContext context, ILogger log)
         {
             log.LogInformation("Processing Channing Function....");
-            var outputs = new List<string>();
 
-            outputs.Add(await context.CallActivityAsync<string>("FirstActivity", "First Function"));
-            outputs.Add(await context.CallActivityAsync<string>("SecondActivity", "Second Function"));
-            outputs.Add(await context.CallActivityAsync<string>("ThirdActivity", "Third Function"));
+            int firstValue = await context.CallActivityAsync<int>("FirstActivity", 10);
+            int secondValue = await context.CallActivityAsync<int>("SecondActivity", firstValue);
+            int thirdValue = await context.CallActivityAsync<int>("ThirdActivity", secondValue);
+
+            int finalValue = firstValue + secondValue + thirdValue;
+            //outputs.Add();
+            //outputs.Add(await context.CallActivityAsync<string>("SecondActivity", "Second Function"));
+            //outputs.Add(await context.CallActivityAsync<string>("ThirdActivity", "Third Function"));
 
             var result = new ResponseModel()
             {
                 HttpStatusCode = HttpStatusCode.OK,
-                ResponseString = string.Join(",", outputs)
+                ResponseString = finalValue.ToString()
             };
             return result;
         }
