@@ -12,9 +12,11 @@ namespace AzureFunction.DurableFunctions.Channing.Activities
         [FunctionName("SecondActivity")]
         public static int Run([ActivityTrigger] int number, ILogger log)
         {
-            log.LogInformation($"Process SecondActivity - Value: {number}");
             Random random = new Random();
-            return random.Next(100, 1000);
+            int result = number + random.Next(100, 1000);
+            log.LogInformation($"Process SecondActivity - | Input: {number} Output: {result} |");
+            
+            return result;
         }
     }
 }

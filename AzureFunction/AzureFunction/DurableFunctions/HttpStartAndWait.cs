@@ -21,7 +21,7 @@ namespace AzureFunction.DurableFunctions
             ILogger log)
         {
             log.LogInformation("Processing HTTP START And WAIT....");
-            if (string.IsNullOrEmpty(orchestratorName))
+            if (string.IsNullOrWhiteSpace(orchestratorName))
             {
                 log.LogError("Orchestrator Name can not be null.");
                 return new HttpResponseMessage()
