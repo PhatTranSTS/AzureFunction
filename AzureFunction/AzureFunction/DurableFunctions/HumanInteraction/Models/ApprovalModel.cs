@@ -6,6 +6,14 @@ namespace AzureFunction.DurableFunctions.HumanInteraction.Models
 {
     public class ApprovalModel
     {
-        public bool IsApproved { get; set; }
+        public string RequestId { get; set; }
+        public bool IsApproval { get; set; }
+        public string Reason { get; set; }
+        public ApprovalModel(string requestId, bool isApproval, string reason)
+        {
+            this.RequestId = requestId;
+            this.IsApproval = isApproval;
+            this.Reason = reason;
+        }
     }
 }
