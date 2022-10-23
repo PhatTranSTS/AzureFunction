@@ -26,11 +26,7 @@ namespace AzureFunction.DurableFunctions.HumanInteraction
             else
                 message = "Rejected";
 
-            var result = new ResponseModel()
-            {
-                HttpStatusCode = HttpStatusCode.OK,
-                ResponseString = message
-            };
+            var result = new ResponseModel(HttpStatusCode.OK, message);
             return result;
         }
     }

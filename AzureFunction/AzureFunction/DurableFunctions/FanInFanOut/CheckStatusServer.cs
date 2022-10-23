@@ -7,9 +7,10 @@ namespace AzureFunction.DurableFunctions.Channing.Activities
     public static class CheckStatusServer
     {
         [FunctionName("CheckStatusServer")]
-        public static string SayHello([ActivityTrigger] string name, ILogger log)
+        public static bool SayHello([ActivityTrigger] string name, ILogger log)
         {
-            return $"Server {name}: Good";
+            log.LogInformation("-----Running CheckStatusServer Activity...");
+            return name == "Error";
         }
     }
 }

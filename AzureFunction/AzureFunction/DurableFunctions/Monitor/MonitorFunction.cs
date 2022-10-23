@@ -46,11 +46,7 @@ namespace AzureFunction.DurableFunctions.Monitor
 
             //log.LogInformation($"Latest Price: {latestPrice}");
 
-            return new ResponseModel()
-            {
-                HttpStatusCode = HttpStatusCode.OK,
-                ResponseString = "Done"
-            };
+            return new ResponseModel(HttpStatusCode.OK, "Done");
         }
     }
 }

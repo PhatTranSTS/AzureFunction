@@ -16,14 +16,9 @@ namespace AzureFunction.DurableFunctions.AsyncHTTPAPIs
         public static async Task<ResponseModel> RunOrchestrator(
             [OrchestrationTrigger] IDurableOrchestrationContext context, ILogger log)
         {
-            log.LogInformation("Processing LongFunction:....");
+            log.LogInformation("======Processing LongFunction:....");
             Thread.Sleep(15000);
-            var result = new ResponseModel()
-            {
-                HttpStatusCode = HttpStatusCode.OK,
-                ResponseString = "Done LongFunction"
-            };
-            return result;
+            return new ResponseModel(HttpStatusCode.OK, "Done LongFunction");
         }
     }
 }
