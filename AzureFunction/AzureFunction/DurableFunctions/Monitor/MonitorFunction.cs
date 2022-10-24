@@ -21,19 +21,15 @@ namespace AzureFunction.DurableFunctions.Monitor
                [DurableClient] IDurableClient orchestratorClient,
                ILogger log)
         {
-            log.LogInformation("======Processing Monitor Function....");
+            log.LogInformation("=========Processing Monitor Function....");
+            int count = 0;
             try
             {
-                // Post man excute Long Process Task with HTTP Start FF to get instanceId
-                MonitorRequestModel request = context.GetInput<MonitorRequestModel>();
-
                 DateTime expTime = context.CurrentUtcDateTime.AddSeconds(60);
-
+                log.LogInformation($"Expiry Time: {expTime.ToString()}");
                 while (context.CurrentUtcDateTime < expTime)
                 {
-                    log.LogInformation("TEST");
-                    //var jobStatus = await orchestratorClient.GetStatusAsync(request.InstanceId, true, true, true);
-                    var jobStatus = await context.CallActivityAsync<bool>("LongProcessTask", null);
+                    var jobStatus = await context.CallActivityAsync<bool>("LongProcessTask", count);
                     if (jobStatus)
                     {
                         log.LogInformation("Job is completed!!!");
@@ -42,9 +38,11 @@ namespace AzureFunction.DurableFunctions.Monitor
 
                     var nextCheck = context.CurrentUtcDateTime.AddSeconds(5);
                     await context.CreateTimer(nextCheck, CancellationToken.None);
+                    count++;
                 }
 
-                return new OkObjectResult("Completed Monitor");
+                log.LogError($"**=====MonitorFunction: TIME-OUT - at {context.CurrentUtcDateTime.ToString()}");
+                return new BadRequestObjectResult("TIME-OUT");
             }
             catch (Exception ex)
             {

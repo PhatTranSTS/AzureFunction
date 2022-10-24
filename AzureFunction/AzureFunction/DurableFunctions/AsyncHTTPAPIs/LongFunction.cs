@@ -16,7 +16,7 @@ namespace AzureFunction.DurableFunctions.AsyncHTTPAPIs
         {
             log.LogInformation("======Processing LongFunction:....");
             log.LogInformation("Waiting for 30s....");
-            await Task.Delay(30000);
+            await Task.Delay(10000);
             return new ResponseModel(HttpStatusCode.OK, "Done LongFunction");
         }
     }

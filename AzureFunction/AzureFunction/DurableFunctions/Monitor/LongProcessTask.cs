@@ -9,10 +9,10 @@ namespace AzureFunction.DurableFunctions.Channing.Activities
     public static class LongProcessTask
     {
         [FunctionName("LongProcessTask")]
-        public static async Task<bool> Run([ActivityTrigger] string name, ILogger log)
+        public static async Task<bool> Run([ActivityTrigger] int count, ILogger log)
         {
-            log.LogInformation($"Process LongProcessTask Activity-----");
-            await Task.Delay(30000);
+            log.LogInformation($"-------Process LongProcessTask Activity: Times - {count}");
+            await Task.Delay(10000);
             return false;
         }
     }
