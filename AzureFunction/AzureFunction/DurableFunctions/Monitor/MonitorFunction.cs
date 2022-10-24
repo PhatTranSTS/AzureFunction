@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using AzureFunction.DurableFunctions.FanInFanOut.Models;
 using AzureFunction.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
@@ -13,40 +16,40 @@ namespace AzureFunction.DurableFunctions.Monitor
     public static class MonitorFunction
     {
         [FunctionName("MonitorFunction")]
-        public static async Task<ResponseModel> RunOrchestrator(
-            [OrchestrationTrigger] IDurableOrchestrationContext context, ILogger log)
+        public static async Task<IActionResult> RunOrchestrator(
+               [OrchestrationTrigger] IDurableOrchestrationContext context,
+               [DurableClient] IDurableClient orchestratorClient,
+               ILogger log)
         {
-            log.LogInformation("Processing Monitor Function....");
+            log.LogInformation("======Processing Monitor Function....");
+            try
+            {
+                // Post man excute Long Process Task with HTTP Start FF to get instanceId
+                MonitorRequestModel request = context.GetInput<MonitorRequestModel>();
 
-            //string instanceId = context.GetInput<string>();
-            DateTime expTime = context.CurrentUtcDateTime.AddHours(24);
+                DateTime expTime = context.CurrentUtcDateTime.AddSeconds(60);
 
-            string exportReportStatus = string.Empty;
-            int number = 0;
-            while (context.CurrentUtcDateTime < expTime)
-            { 
-                exportReportStatus = await context.CallActivityAsync<string>("ExportReport", number);
-
-                if (exportReportStatus == "Completed")
+                while (context.CurrentUtcDateTime < expTime)
                 {
-                    log.LogInformation("Done Monitor!!!");
-                    break;
-                } else
-                {
-                    number++;
+                    log.LogInformation("TEST");
+                    //var jobStatus = await orchestratorClient.GetStatusAsync(request.InstanceId, true, true, true);
+                    var jobStatus = await context.CallActivityAsync<bool>("LongProcessTask", null);
+                    if (jobStatus)
+                    {
+                        log.LogInformation("Job is completed!!!");
+                        break;
+                    }
+
                     var nextCheck = context.CurrentUtcDateTime.AddSeconds(5);
                     await context.CreateTimer(nextCheck, CancellationToken.None);
                 }
+
+                return new OkObjectResult("Completed Monitor");
             }
-
-            //int latestPrice = await context.CallActivityWithRetryAsync<int>("GetLatestPrice",
-            //        new RetryOptions(firstRetryInterval : TimeSpan.FromSeconds(4), maxNumberOfAttempts : 3),
-            //        string.Empty
-            //    );
-
-            //log.LogInformation($"Latest Price: {latestPrice}");
-
-            return new ResponseModel(HttpStatusCode.OK, "Done");
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex.Message);
+            }
         }
     }
 }
