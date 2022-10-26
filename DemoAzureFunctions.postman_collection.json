@@ -1,0 +1,350 @@
+{
+	"info": {
+		"_postman_id": "063b59f5-9798-447b-9058-a93aaa9f77a0",
+		"name": "DemoAzureFunctions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AsynStatus",
+			"item": [
+				{
+					"name": "Get Function Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7071/api/status/aca2a57215a64cf48f988da8f8de4426",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"status",
+								"aca2a57215a64cf48f988da8f8de4426"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FF - SendSingleRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Sender\": \"Phat\",\r\n    \"Content\": \"Please review pull request: Request_1\",\r\n    \"PackageName\": \"request_1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7071/api/start/SendSingleRequest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"start",
+								"SendSingleRequest"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Channing",
+			"item": [
+				{
+					"name": "Start WTE - Channing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7071/api/startandwait/ChanningFunction",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"startandwait",
+								"ChanningFunction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FanInFanOut",
+			"item": [
+				{
+					"name": "WTE - FanInFanOutFunction --f crash",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"IsForceCrash\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7071/api/startandwait/FanInFanOutFunction",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"startandwait",
+								"FanInFanOutFunction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "WTE - FanInFanOutFunction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"IsForceCrash\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7071/api/startandwait/FanInFanOutFunction",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"startandwait",
+								"FanInFanOutFunction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HumanInteraction",
+			"item": [
+				{
+					"name": "FF - SendSingleRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Sender\": \"Phat\",\r\n    \"Content\": \"Please review pull request: Request_1\",\r\n    \"PackageName\": \"request_1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7071/api/start/SendSingleRequest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"start",
+								"SendSingleRequest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "HumanRaiseApproval",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"RequestId\": \"cbca5b605d324c7399d01863eb731e55\",\r\n    \"IsApproval\": true,\r\n    \"Reason\": \"Request_1 reason\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7071/api/approval/request_1/cbca5b605d324c7399d01863eb731e55",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"approval",
+								"request_1",
+								"cbca5b605d324c7399d01863eb731e55"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Monitor",
+			"item": [
+				{
+					"name": "Start FF",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7071/api/start/MonitorFunction",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"start",
+								"MonitorFunction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Start FF",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7071/api/start/ChanningFunction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"start",
+						"ChanningFunction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start WTE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"value\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7071/api/startandwait/ ",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"startandwait",
+						" "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Function Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7071/api/status/aca2a57215a64cf48f988da8f8de4426",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"status",
+						"aca2a57215a64cf48f988da8f8de4426"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TerminalFunction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7071/api/terminate/{instanceId}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"api",
+						"terminate",
+						"{instanceId}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
