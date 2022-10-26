@@ -23,7 +23,7 @@ namespace AzureFunction.DurableFunctions.Channing
 
                 int secondValue = await context.CallActivityAsync<int>("SecondActivity", firstValue);
 
-                int thirdValue = await context.CallActivityAsync<int>("ThirdActivity", firstValue);
+                int thirdValue = await context.CallActivityAsync<int>("ThirdActivity", secondValue);
 
                 return new OkObjectResult($"------Finish Channing Function: First {firstValue}; Second {secondValue}; Third {thirdValue}");
             }
