@@ -21,7 +21,7 @@ namespace AzureFunction.DurableFunctions.Monitor
                [DurableClient] IDurableClient orchestratorClient,
                ILogger log)
         {
-            log.LogInformation("=========Processing Monitor Function....");
+            log.LogInformation("=========Processing Monitor Functio n....");
             int count = 0;
             try
             {

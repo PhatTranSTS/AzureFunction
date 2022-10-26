@@ -25,7 +25,7 @@ namespace AzureFunction.DurableFunctions.Channing
 
                 int thirdValue = await context.CallActivityAsync<int>("ThirdActivity", firstValue);
 
-                return new OkObjectResult("------Finish Channing Function");
+                return new OkObjectResult($"------Finish Channing Function: First {firstValue}; Second {secondValue}; Third {thirdValue}");
             }
             catch (Exception ex)
             {
